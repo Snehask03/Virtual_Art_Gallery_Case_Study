@@ -758,37 +758,4 @@ class VirtualArtGalleryImpl:
 
 if __name__ == "__main__":
     service = VirtualArtGalleryImpl()
-    # artwork = Artwork(
-    #     title= "Fall among silence",
-    #     description="A digital representation of silent landscapes",
-    #     creation_date="2015-05-24",
-    #     medium="Digital",
-    #     image_url="https://Fall among silence.com",
-    #     artist_id = 102
-    # )
-    # service.add_artwork(artwork)
-    # print(service.find_artwork(201))
-    #service.update_artwork(201)
-    # service.update_artist(101)
-    # gallery = Gallery(
-    #     gallery_name= "Smith Inc",
-    #     gallery_description="Features abstract landscapes and brush works by emerging artists.",
-    #     gallery_location="West Jason",
-    #     curator_id=101,
-    #     opening_hours="9 AM onwards"
-    # )
-    # service.add_gallery(gallery)
-    # print(service.find_gallery(301))
-    # user = User(
-    #     user_name= "olivia82",
-    #     user_password= "'olivia_82",
-    #     email= "oliviauser@gmail.com",
-    #     first_name= "Olivia",
-    #     last_name= "Liam",
-    #     date_of_birth="1982-06-02",
-    #     profile_picture="oliviadrive.jpg"
-    # )
-    # service.add_user(user)
-    # print(service.find_user(401))
-    print(service.search_user("olivia"))
 
