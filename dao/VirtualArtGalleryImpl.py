@@ -753,9 +753,31 @@ class VirtualArtGalleryImpl:
         finally:
             if cursor:
                 cursor.close()
-
+    def update_favorites_artwork(self, user_id, old_artwork_id, new_artwork_id):
+        cursor = None
+        try:
+            cursor = self.connection.cursor()
+            delete_query = """
+            DELETE FROM UserFavoriteArtwork
+            WHERE User_ID = %s AND Artwork_ID = %s
+            """
+            cursor.execute(delete_query, (user_id, old_artwork_id))
+            insert_query = """
+            INSERT INTO UserFavoriteArtwork (User_ID, Artwork_ID)
+            VALUES (%s, %s)
+            """
+            cursor.execute(insert_query, (user_id, new_artwork_id))
+            self.connection.commit()
+            print("Favorite Artwork is updated successfuly!")
+            return True
+        except FavoriteNotFoundException as e:
+            print(f"User Favorite Artwork Error:{e}")
+            return False
+        except Exception as e:
+            print(f"Unexpected Error:{e}")
 
 
 if __name__ == "__main__":
     service = VirtualArtGalleryImpl()
+
 

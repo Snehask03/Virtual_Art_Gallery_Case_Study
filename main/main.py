@@ -347,7 +347,8 @@ def user_favorite_menu(service):
         print("1.Add artwork to Favorites")
         print("2.Remove Artwork from the User Favorite")
         print("3.View User's favorite Artworks")
-        print("4.Back to Main menu")
+        print("4.Update User favorite")
+        print("5.Back to Main menu")
         choice = input("Enter your choice: ")
 
         if choice == '1':
@@ -369,7 +370,13 @@ def user_favorite_menu(service):
             else:
                 print("No favorite artworks found.")
 
-        elif choice == '4':
+        elif choice =='4':
+            user_id = int(input("Enter the user id: "))
+            old_artwork_id = int(input("Enter the old artwork id to update: "))
+            new_artwork_id = int(input("Enter the new artwork id to set as favorites: "))
+            service.update_favorites_artwork(user_id, old_artwork_id, new_artwork_id)
+
+        elif choice == '5':
             break
         else:
             print("Invalid input. Please try again.")

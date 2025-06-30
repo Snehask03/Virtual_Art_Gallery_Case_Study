@@ -148,6 +148,10 @@ class TestVirtualArtGallery(unittest.TestCase):
         success = self.service.remove_artwork_from_favourite(403, 212)
         self.assertTrue(success)
 
+    def test_update_favorite_artwork(self):
+        result = self.service.update_favorites_artwork(402, 209,212)
+        self.assertTrue(result)
+
     def test_add_artwork_to_gallery(self):
         success = self.service.add_artwork_to_gallery(211, 313)
         self.assertTrue(success)
