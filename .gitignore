@@ -1,0 +1,5 @@
+config/db.properties
+.venv/
+*.pyc
+*.log
+.idea/

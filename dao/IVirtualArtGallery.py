@@ -16,7 +16,7 @@ class IVirtualArtGallery(ABC):
         pass
 
     @abstractmethod
-    def get_artist_by_id(self, artist_id):
+    def find_artist(self, artist_id):
         pass
 
     @abstractmethod
@@ -27,13 +27,21 @@ class IVirtualArtGallery(ABC):
     def deactivate_artist(self, artist_id):
         pass
 
+    @abstractmethod
+    def view_all_artists(self):
+        pass
+
+    @abstractmethod
+    def validate_artist(self, name, birth_date):
+        pass
+
     # Artwork Management
     @abstractmethod
     def add_artwork(self, artwork):
         pass
 
     @abstractmethod
-    def update_artwork(self, artwork):
+    def update_artwork(self, artwork_id):
         pass
 
     @abstractmethod
@@ -41,11 +49,19 @@ class IVirtualArtGallery(ABC):
         pass
 
     @abstractmethod
-    def get_artwork_by_id(self, artwork_id):
+    def find_artwork(self, artwork_id):
         pass
 
     @abstractmethod
     def search_artworks(self, keyword):
+        pass
+
+    @abstractmethod
+    def view_all_artworks(self):
+        pass
+
+    @abstractmethod
+    def view_artworks_by_artist(self, artist_id):
         pass
 
     # Gallery Management
@@ -66,11 +82,15 @@ class IVirtualArtGallery(ABC):
         pass
 
     @abstractmethod
-    def search_galleries(self, keyword):
+    def search_gallery(self, keyword):
         pass
 
     @abstractmethod
     def deactivate_gallery(self, gallery_id):
+        pass
+
+    @abstractmethod
+    def view_all_galleries(self):
         pass
 
     #User management
@@ -98,6 +118,10 @@ class IVirtualArtGallery(ABC):
     def deactivate_user(self, user_id):
         pass
 
+    @abstractmethod
+    def validate_user(self, user_name, user_password):
+        pass
+
     #Artwork-Gallery Junction table:
     @abstractmethod
     def add_artwork_to_gallery(self, artwork_id, gallery_id):
@@ -115,6 +139,9 @@ class IVirtualArtGallery(ABC):
     def remove_artwork_from_gallery(self, artwork_id, gallery_id):
         pass
 
+    @abstractmethod
+    def view_all_artwork_gallery_mappings(self):
+        pass
 
     #User Favourites
     @abstractmethod

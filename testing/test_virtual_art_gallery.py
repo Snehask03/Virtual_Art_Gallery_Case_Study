@@ -1,5 +1,4 @@
 import unittest
-from cgi import print_environ_usage
 from unittest.mock import patch
 from dao.VirtualArtGalleryImpl import VirtualArtGalleryImpl
 from entities.artist import Artist
@@ -19,12 +18,12 @@ class TestVirtualArtGallery(unittest.TestCase):
     def test_add_artwork(self):
         art = Artwork(
             artwork_id=None,
-            title = "Test Art Uploaded",
-            description="Uploaded for test",
-            creation_date = "2022-05-10",
-            medium="Oil on canvas",
-            image_url="Test_art.jpg",
-            artist_id= 101
+            title = "Traces of yesterday",
+            description="A digital piece on fleeting moments",
+            creation_date = "2021-12-28",
+            medium="Digital",
+            image_url="tracesofyesterday.jpg",
+            artist_id= 107
         )
         result = self.service.add_artwork(art)
         self.assertTrue(result)
@@ -135,7 +134,7 @@ class TestVirtualArtGallery(unittest.TestCase):
         self.assertTrue(result)
 
     def test_add_artwork_to_favorite(self):
-        success = self.service.add_artwork_to_favourite(403,212)
+        success = self.service.add_artwork_to_favourite(404,214)
         self.assertTrue(success)
         print("Artwork added to favorites")
 
@@ -149,7 +148,7 @@ class TestVirtualArtGallery(unittest.TestCase):
         self.assertTrue(success)
 
     def test_update_favorite_artwork(self):
-        result = self.service.update_favorites_artwork(402, 209,212)
+        result = self.service.update_favorites_artwork(402, 209,214)
         self.assertTrue(result)
 
     def test_add_artwork_to_gallery(self):
@@ -162,10 +161,58 @@ class TestVirtualArtGallery(unittest.TestCase):
         print("Artworks in gallery", [art[1] for art in artworks])
 
 
-    def test_remove_artwork_from_galleru(self):
+    def test_remove_artwork_from_gallery(self):
         success = self.service.remove_artwork_from_gallery(211, 313)
         self.assertTrue(success)
 
+    def test_view_all_artworks(self):
+        artworks = self.service.view_all_artworks()
+        self.assertIsInstance(artworks, list)
+        print("All artworks", artworks)
+
+    def test_view_all_galleries(self):
+        galleries = self.service.view_all_galleries()
+        self.assertIsInstance(galleries, list)
+        print("All galleries", galleries)
+
+    def test_view_all_artists(self):
+        artists = self.service.view_all_artists()
+        self.assertIsInstance(artists, list)
+        print("All Artists", artists)
+
+    def test_view_all_artwork_gallery_mappings(self):
+        mappings = self.service.view_all_artwork_gallery_mappings()
+        self.assertIsInstance(mappings, list)
+        print("All the mappings", mappings)
+
+    def test_deactivate_artist(self):
+        artist = Artist(name="Test Artist", biography="bio", birth_date="1998-01-01",nationality="Testland", website="example.com", contact_information="example@gmail.com")
+        self.service.add_artist(artist)
+        results = self.service.search_artists("Test Artist")
+        artist_id = results[-1].artist_id
+        result = self.service.deactivate_artist(artist_id)
+        self.assertTrue(result)
+
+    def test_deactivate_gallery(self):
+        gallery = Gallery(gallery_name="Test Gallery", gallery_description="desc", gallery_location="loc", curator_id=101, opening_hours="10 AM onwards")
+        self.service.add_gallery(gallery)
+        results = self.service.search_gallery("Test Gallery")
+        gallery_id = results[-1].gallery_id
+        result = self.service.deactivate_gallery(gallery_id)
+        self.assertTrue(result)
+
+    def test_validate_user(self):
+        user = User(user_name="Nivetha04", user_password="Nivetha_04", email="Nivetha04@gmail.com", first_name="Nivetha", last_name="Saravanan", date_of_birth="1995-08-15", profile_picture="Nivetha.jpg", role= 'user')
+        self.service.add_user(user)
+        result = self.service.validate_user("Nivetha04", "Nivetha_04")
+        self.assertIsNotNone(result)
+        self.assertEqual(result.user_name, "Nivetha04")
+
+    def test_deactivate_user(self):
+        results = self.service.search_user("olivia82")
+        user_id = results[-1].user_id
+        result = self.service.deactivate_user(user_id)
+        self.assertTrue(result)
 
 if __name__ == "__main__":
     unittest.main()

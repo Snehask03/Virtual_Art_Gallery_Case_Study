@@ -5,7 +5,9 @@ class UserFavoriteArtwork:
 
     def __str__(self):
         return (
-            f"User Favorite Artwork[User ID = {self.user_id}, Artwork ID = {self.artwork_id}]"
+            f"\nUser Favorite Artwork Information\n"
+            f"User ID = {self.user_id},\n"
+            f"Artwork ID = {self.artwork_id}\n"
         )
     # Getters and Setters
     @property

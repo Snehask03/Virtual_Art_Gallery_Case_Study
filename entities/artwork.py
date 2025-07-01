@@ -10,9 +10,13 @@ class Artwork:
 
     def __str__(self):
         return (
-            f"Artwork [ID = {self.artwork_id}, Title = '{self.title}',\n"
-            f"Description = '{self.description}', Creation Date = {self.creation_date},\n"
-            f"Medium = '{self.medium}', Image URL = '{self.image_url}',\n"
+            f"\nArtwork Information\n"
+            f"[ID = {self.artwork_id},\n"
+            f"Title = '{self.title}',\n"
+            f"Description = '{self.description}',\n"
+            f"Creation Date = {self.creation_date},\n"
+            f"Medium = '{self.medium}',\n"
+            f"Image URL = '{self.image_url}',\n"
             f"Artist ID = {self.artist_id}]"
         )
 

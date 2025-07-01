@@ -1,5 +1,5 @@
 class User:
-    def __init__(self, user_id = None, user_name = None, user_password = None, email = None, first_name = None, last_name = None, date_of_birth = None, profile_picture = None, is_active = True):
+    def __init__(self, user_id = None, user_name = None, user_password = None, email = None, first_name = None, last_name = None, date_of_birth = None, profile_picture = None, is_active = True, role = None):
         self.__user_id = user_id
         self.__user_name = user_name
         self.__user_password = user_password
@@ -9,13 +9,21 @@ class User:
         self.__date_of_birth = date_of_birth
         self.__profile_picture = profile_picture
         self.__is_active = is_active
+        self.__role = role
 
     def __str__(self):
         return (
-            f"User [ID = {self.user_id}, User Name = '{self.user_name}',"
-            f"Password = '{self.user_password}', Email = '{self.email}',"
-            f"First Name = '{self.first_name}', Last Name = '{self.last_name}',"
-            f"Date of Birth = {self.date_of_birth}, Profile Picture = '{self.profile_picture}' , Is Active = {self.is_active}]"
+            f"\nUser Information\n"
+            f"ID = {self.user_id},\n "
+            f"User Name = '{self.user_name}',\n"
+            f"Password = '{self.user_password}',\n"
+            f"Email = '{self.email}',\n"
+            f"First Name = '{self.first_name}',\n"
+            f"Last Name = '{self.last_name}',\n"
+            f"Date of Birth = {self.date_of_birth},\n"
+            f"Profile Picture = '{self.profile_picture}' ,\n"
+            f"Is Active = {self.is_active},\n"
+            f"Role = {self.role}"
         )
 
     #Getters and Setters
@@ -81,5 +89,12 @@ class User:
     @is_active.setter
     def is_active(self, is_active):
         self.__is_active = is_active
+
+    @property
+    def role(self):
+        return self.__role
+    @role.setter
+    def role(self, role):
+        self.__role = role
 
 

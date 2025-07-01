@@ -5,7 +5,9 @@ class ArtworkGallery:
 
     def __str__(self):
         return (
-            f"ArtworkGallery [Artwork ID = {self.artwork_id}, Gallery ID = {self.gallery_id}]"
+            f"\nArtworkGallery Information\n"
+            f"Artwork ID = {self.artwork_id},\n"
+            f" Gallery ID = {self.gallery_id}"
         )
 
     # Getters and Setters

@@ -41,7 +41,7 @@ class InvalidUserPasswordException(Exception):
     def __init__(self, message="Invalid password has been entered!"):
         super().__init__(message)
 
-# Gallery npt found exceptions:
+# Gallery not found exceptions:
 class GalleryNotFoundException(Exception):
     def __init__(self, message = "Gallery does not exist!"):
         super().__init__(message)

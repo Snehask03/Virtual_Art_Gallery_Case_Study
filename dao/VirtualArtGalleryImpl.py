@@ -49,7 +49,7 @@ class VirtualArtGalleryImpl:
             result = cursor.fetchone()
             if result:
                 print(f"Here is the artist you're searching is given below:")
-                return result
+                return Artist(*result)
             else:
                 raise InvalidArtistIDException
         except InvalidArtistIDException as e:
@@ -69,7 +69,7 @@ class VirtualArtGalleryImpl:
             keyword_result = f"%{keyword}%"
             cursor.execute(query, (keyword_result,keyword_result, keyword_result))
             results = cursor.fetchall()
-            return results
+            return [Artist(*row) for row in results]
         except ArtistNotFoundException as e:
             print(f"Artist Error:{e}")
         except Exception as e:
@@ -123,12 +123,13 @@ class VirtualArtGalleryImpl:
         try:
             cursor = self.connection.cursor()
             query = """
-            UPDATE Artist SET Is_Active = False WHERE Artist_ID = %s
+            UPDATE Artist SET IsActive = False WHERE Artist_ID = %s
             """
             cursor.execute(query, (artist_id,))
             self.connection.commit()
             if cursor.rowcount > 0:
                 print("The artist is deactivated")
+                return True
             else:
                 raise ArtistNotFoundException
 
@@ -144,7 +145,7 @@ class VirtualArtGalleryImpl:
     def remove_artist(self, artist_id):
         cursor = None
         try:
-            if artist_id < 100 or artist_id > 199:
+            if artist_id < 100:
                 raise InvalidArtistIDException
             cursor = self.connection.cursor()
             delete_query = """
@@ -204,7 +205,7 @@ class VirtualArtGalleryImpl:
             result = cursor.fetchone()
             if result:
                 print(f"Here is the artwork you're searching is given below:")
-                return result
+                return Artwork(*result)
             else:
                 raise InvalidArtworkIDException
         except InvalidArtworkIDException as e:
@@ -224,7 +225,7 @@ class VirtualArtGalleryImpl:
             keyword_result = f"%{keyword}%"
             cursor.execute(query, (keyword_result, keyword_result, keyword_result))
             results = cursor.fetchall()
-            return results
+            return [Artwork(*row) for row in results]
         except ArtworkNotFoundException as e:
             print(f"Artwork Error:{e}")
         except Exception as e:
@@ -279,7 +280,7 @@ class VirtualArtGalleryImpl:
     def remove_artwork(self, artwork_id):
         cursor = None
         try:
-            if artwork_id < 200 or artwork_id > 299:
+            if artwork_id < 200:
                 raise InvalidArtworkIDException
             cursor = self.connection.cursor()
             delete_query = """
@@ -292,7 +293,7 @@ class VirtualArtGalleryImpl:
                 return True
             else:
                 raise ArtworkNotFoundException
-        except ArtistNotFoundException as e:
+        except ArtworkNotFoundException as e:
             print(f"Artwork Error:{e}")
             return False
         except Exception as e:
@@ -339,7 +340,7 @@ class VirtualArtGalleryImpl:
             result = cursor.fetchone()
             if result:
                 print(f"Here is the gallery you're searching is given below:")
-                return result
+                return Gallery(*result)
             else:
                 raise InvalidGalleryIDException
         except InvalidGalleryIDException as e:
@@ -358,7 +359,7 @@ class VirtualArtGalleryImpl:
             keyword_result = f"%{keyword}%"
             cursor.execute(query, (keyword_result,keyword_result, keyword_result))
             results = cursor.fetchall()
-            return results
+            return [Gallery(*row) for row in results]
         except GalleryNotFoundException as e:
             print(f"Gallery Error:{e}")
         except Exception as e:
@@ -418,6 +419,7 @@ class VirtualArtGalleryImpl:
             self.connection.commit()
             if cursor.rowcount > 0:
                 print("The Gallery is deactivated")
+                return True
             else:
                 raise GalleryNotFoundException
         except GalleryNotFoundException as e:
@@ -432,8 +434,8 @@ class VirtualArtGalleryImpl:
     def remove_gallery(self, gallery_id):
         cursor = None
         try:
-            if gallery_id < 300 or gallery_id > 399:
-                raise InvalidArtistIDException
+            if gallery_id < 300:
+                raise InvalidGalleryIDException
             cursor = self.connection.cursor()
             delete_query = """
             DELETE FROM Gallery WHERE Gallery_ID = %s
@@ -460,8 +462,8 @@ class VirtualArtGalleryImpl:
         try:
             cursor = self.connection.cursor()
             insert_query = """
-            INSERT INTO Users(User_Name, User_Password, Email, First_Name, Last_Name,Date_Of_Birth, Profile_Picture)
-            VALUES(%s, %s, %s, %s, %s, %s, %s)
+            INSERT INTO Users(User_Name, User_Password, Email, First_Name, Last_Name,Date_Of_Birth, Profile_Picture, Role)
+            VALUES(%s, %s, %s, %s, %s, %s, %s, %s)
             """
             values = (
                 user.user_name,
@@ -470,7 +472,8 @@ class VirtualArtGalleryImpl:
                 user.first_name,
                 user.last_name,
                 user.date_of_birth,
-                user.profile_picture
+                user.profile_picture,
+                user.role
             )
             cursor.execute(insert_query, values)
             self.connection.commit()
@@ -493,7 +496,7 @@ class VirtualArtGalleryImpl:
             result = cursor.fetchone()
             if result:
                 print(f"Here is the user you're searching is given below:")
-                return result
+                return User(*result)
             else:
                 raise InvalidUserIDException
         except InvalidUserIDException as e:
@@ -513,7 +516,7 @@ class VirtualArtGalleryImpl:
             keyword_result = f"%{keyword}%"
             cursor.execute(query, (keyword_result, keyword_result, keyword_result))
             results = cursor.fetchall()
-            return results
+            return [User(*row) for row in results]
         except UserNotFoundException as e:
             print(f"User Error:{e}")
         except Exception as e:
@@ -539,13 +542,14 @@ class VirtualArtGalleryImpl:
             last_name = input(f"Enter the new last name. The existing last name is [{current[5]}]: ") or current[5]
             date_of_birth = input(f"Enter your date of birth (YYYY-MM-DD). The existing date of birth is [{current[6]}]: ") or current[6]
             profile_picture = input(f"Enter image link to set your profile picture. Your existing profile picture is [{current[7]}]: ") or current[7]
+            role = input(f"Enter the role. your existing role is [{current[8]}]:") or current[8]
 
             update_query = """
             UPDATE Users
-            SET User_Name = %s, User_Password = %s, Email = %s, First_Name = %s, Last_Name = %s, Date_Of_Birth = %s, Profile_Picture = %s 
+            SET User_Name = %s, User_Password = %s, Email = %s, First_Name = %s, Last_Name = %s, Date_Of_Birth = %s, Profile_Picture = %s, Role = %s 
             WHERE User_ID = %s
             """
-            values = (user_name, user_password, email, first_name, last_name, date_of_birth, profile_picture, user_id)
+            values = (user_name, user_password, email, first_name, last_name, date_of_birth, profile_picture, role, user_id)
             cursor.execute(update_query, values)
             self.connection.commit()
             if cursor.rowcount > 0:
@@ -573,6 +577,7 @@ class VirtualArtGalleryImpl:
             self.connection.commit()
             if cursor.rowcount > 0:
                 print("The User is deactivated")
+                return True
             else:
                 raise UserNotFoundException
         except UserNotFoundException as e:
@@ -587,7 +592,7 @@ class VirtualArtGalleryImpl:
     def remove_user(self, user_id):
         cursor = None
         try:
-            if user_id < 400 or user_id > 499:
+            if user_id < 400:
                 raise InvalidUserIDException
             cursor = self.connection.cursor()
             delete_query = """
@@ -639,7 +644,8 @@ class VirtualArtGalleryImpl:
             """
             cursor.execute(query, (gallery_id,))
             results = cursor.fetchall()
-            return results
+            for m in results:
+                print(f"Artwork ID: {m[0]} ({m[1]}) - Description: {m[2]}")
         except MappingNotFoundException as e:
             print(f"Artwork Gallery Error: {e}")
         except Exception as e:
@@ -650,7 +656,7 @@ class VirtualArtGalleryImpl:
         try:
             cursor = self.connection.cursor()
             query = """
-            SELECT g.Gallery_ID, g.Gallery_Name, g.Location
+            SELECT g.Gallery_ID, g.Gallery_Name, g.Gallery_Location
             FROM Gallery g
             JOIN ArtworkGallery ag ON g.Gallery_ID = ag.Gallery_ID
             WHERE ag.Artwork_ID = %s 
@@ -703,8 +709,10 @@ class VirtualArtGalleryImpl:
             return True
         except DuplicateFavouriteEntryException as e:
             print(f"User Favorite Artwork Error: {e}")
+            return False
         except Exception as e:
             print(f"Unexpected Error: {e}")
+            return False
         finally:
             if cursor:
                 cursor.close()
@@ -775,7 +783,135 @@ class VirtualArtGalleryImpl:
             return False
         except Exception as e:
             print(f"Unexpected Error:{e}")
+        finally:
+            if cursor:
+                cursor.close()
 
+    def view_all_artists(self):
+        cursor = None
+        try:
+            cursor = self.connection.cursor()
+            query = """
+            SELECT * FROM Artist WHERE IsActive = 1
+            """
+            cursor.execute(query)
+            results = cursor.fetchall()
+            return results
+        except Exception as e:
+            print(f"Error : {e}")
+        finally:
+            if cursor:
+                cursor.close()
+
+    def view_all_artworks(self):
+        cursor = None
+        try:
+            cursor = self.connection.cursor()
+            query = """
+            SELECT * FROM Artwork
+            """
+            cursor.execute(query)
+            results = cursor.fetchall()
+            return results
+        except Exception as e:
+            print(f"Error : {e}")
+        finally:
+            if cursor:
+                cursor.close()
+
+    def view_all_galleries(self):
+        cursor = None
+        try:
+            cursor = self.connection.cursor()
+            query = """
+            SELECT * FROM Gallery WHERE Is_Active = 1
+            """
+            cursor.execute(query)
+            results = cursor.fetchall()
+            return results
+        except Exception as e:
+            print(f"Error : {e}")
+        finally:
+            if cursor:
+                cursor.close()
+
+    def view_all_artwork_gallery_mappings(self):
+        cursor = None
+        try:
+            cursor = self.connection.cursor()
+            query = """
+            SELECT a.Artwork_ID, a.Title, g.Gallery_ID, g.Gallery_Name
+            FROM Artwork a
+            JOIN ArtworkGallery ag ON a.Artwork_ID = ag.Artwork_ID
+            JOIN Gallery g ON ag.Gallery_ID = g.Gallery_ID
+            """
+            cursor.execute(query)
+            results = cursor.fetchall()
+            for row in results:
+                print(f"Artwork ID: {row[0]} ({row[1]}) <--> Gallery ID : {row[2]} ({row[3]})")
+            return results
+        except Exception as e:
+            print(f"Error : {e}")
+        finally:
+            if cursor:
+                cursor.close()
+
+    def validate_user(self, user_name, user_password):
+        cursor = None
+        try:
+            cursor = self.connection.cursor()
+            query = """
+            SELECT * FROM Users WHERE User_Name = %s AND User_Password = %s
+            """
+            cursor.execute(query, (user_name, user_password))
+            user_data = cursor.fetchone()
+            if user_data:
+                return User(*user_data)
+            else:
+                raise UserNotFoundException("Invalid Username or password")
+        except Exception as e:
+            print(f"Error : {e}")
+        finally:
+            if cursor:
+                cursor.close()
+
+    def validate_artist(self, name, birth_date):
+        cursor = None
+        try:
+            cursor = self.connection.cursor()
+            query ="""
+            SELECT * FROM Artist WHERE Name = %s AND Birth_Date = %s
+            """
+            cursor.execute(query, (name, birth_date))
+            row = cursor.fetchone()
+            if row:
+                return Artist(*row)
+            else:
+                return None
+        except Exception as e:
+            print(f"Error Validating the artist", e)
+        finally:
+            if cursor:
+                cursor.close()
+
+    def view_artworks_by_artist(self, artist_id):
+        cursor = None
+        try:
+            cursor = self.connection.cursor()
+            query = """
+            SELECT * FROM Artwork WHERE Artist_ID = %s
+            """
+            cursor.execute(query, (artist_id,))
+            rows = cursor.fetchall()
+            if rows:
+                return [Artwork(*row) for row in rows]
+            else:
+                return None
+        except Exception as e:
+            print(f"Error:", e)
+        finally:
+            if cursor:
+                cursor.close()
 
 if __name__ == "__main__":
     service = VirtualArtGalleryImpl()

@@ -10,9 +10,14 @@ class Gallery:
 
     def __str__(self):
         return (
-            f"Gallery [ID = {self.gallery_id}, Gallery Name = '{self.gallery_name}',\n"
-            f"Description = '{self.gallery_description}', Location = '{self.gallery_location}',\n"
-            f"Curator ID = {self.curator_id}, Opening Hours = '{self.opening_hours}', IS_Active = {self.is_active}]"
+            f"\nGallery Information\n"
+            f"ID = {self.gallery_id},\n"
+            f"Gallery Name = '{self.gallery_name}',\n"
+            f"Description = '{self.gallery_description}',\n"
+            f"Location = '{self.gallery_location}',\n"
+            f"Curator ID = {self.curator_id},\n"
+            f"Opening Hours = '{self.opening_hours}',\n"
+            f"Is_Active = {self.is_active}"
         )
 
     # Getters and Setters

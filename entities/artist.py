@@ -11,10 +11,12 @@ class Artist:
 
     def __str__(self):
         return (
-            f"Artist[ID = {self.artist_id}, Name = '{self.name}',\n "
+            f"\nArtist Information\n"
+            f"ID = {self.artist_id}, Name = '{self.name}',\n"
             f"Biography = '{self.biography}', Birth Date = {self.birth_date},\n"
             f"Nationality = '{self.nationality}', Website = '{self.website}',\n"
-            f"Contact Information = '{self.contact_information}', Is Active = {self.is_active}]"
+            f"Contact Information = '{self.contact_information}',\n "
+            f"Is Active = {self.is_active}"
         )
 
     # Getters and Setters
